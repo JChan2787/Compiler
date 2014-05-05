@@ -71,6 +71,11 @@ def AddSpaceBetweenOperators(line):
             previous = True
         else:
             previous = False
+       
+       ## Adds space between INTEGER and previous letter
+        if ''.join(line[index:index+3]) == 'INT':
+            if line[index-1] != ': ':
+                line[index] = ' ' + line[index]
         index += 1
     ## END WHILE LOOP
 
@@ -105,10 +110,8 @@ def Adjust(filename):
         line[i] = line[i].replace('\n','')
         line[i] = line[i].replace('\r','')
         line[i] = line[i].replace(' ', '')
-        
         ## (1B)
         line[i] = RemoveComments(line[i])
-        
         if start == False:
             ## (1C)
             start, line[i] = FindStart(line[i])
