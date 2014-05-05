@@ -4,7 +4,7 @@ Compiler
 Compiler for CPSC 323
 
 Contains:
-compiler.py - MAIN FILE
+compiler.py (MAIN FILE)
 adjust.py
 build.py
 translate.py
