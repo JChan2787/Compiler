@@ -222,7 +222,7 @@ def Build(filename):
       None, None, None, None, None, None, None, None, None, None, None, None ],
     ## ERROR CATCHER
     [ None, None, 'ERRORVAR', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
-      None, None, 'ERROR4', None, None, None, None, None, None, None, 'ERROR1', None, 'ERROR1', None ] ]
+      None, None, 'ERROR4', 'ERROR1', None, None, None, None, None, None, 'ERROR1', None, 'ERROR1', None ] ]
     
     variables = [] # Keeps track of declared variables
     reserved = [ 'PROGRAM', 'VAR', 'INTEGER', 'BEGIN', 'END.', 'writeln(', 'writeln' ]
@@ -287,8 +287,8 @@ def Build(filename):
                 print("ERROR: INTEGER is expected")
                 return False
         ## (8)
-        if currentLine == 3:
-            if sourceCode[s+1] != 'BEGIN':
+        if sourceCode[s] == 'INTEGER':
+            if sourceCode[s+1] != 'BEGIN' and sourceCode[s+2] != 'BEGIN':
                 print("ERROR: BEGIN is expected")
                 return False
             currentLine += 1
@@ -326,9 +326,6 @@ def Build(filename):
     while count <= len(statement):
         ## (2)
         current = stack.pop()
-        #print("Stack: {}".format(stack))
-        #print("Popped: {}".format(current))
-        #print("Read: {}".format(statement[count]))
         if current == statement[count]:
             ## (3)
             if current == 'END.':
@@ -337,7 +334,6 @@ def Build(filename):
         elif current != 'LAMBDA':
             ## (4)
             pending = table[ RowValue(current) ][ ColumnValue(statement[count]) ]
-            #print("Table value: {}".format(pending))
             if pending not in error:
                 pending = pending.split() # create a list of pending characters
                 if ''.join(pending) == 'I,D':
