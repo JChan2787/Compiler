@@ -159,8 +159,8 @@ def Build(filename):
       None, None, None, None, None, None, None, None, None, None, 'LAMBDA', None, None, None ],
     ## Y
     [ 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 'Z Y', 
-      'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', None, 'LAMBDA', 'ERROR1', None, None, 'LAMBDA', 'LAMBDA', 'LAMBDA', 
-      'LAMBDA', None, None, None, 'ERROR2' ],
+      'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', None, 'LAMBDA', 'ERROR1', 'ERROR2', None, 'LAMBDA', 'LAMBDA', 'LAMBDA', 
+      'LAMBDA', 'ERROR1', None, None, 'ERROR2' ],
     ## Z
     [ 'ID', 'ID', 'ID', 'ID', 'ID', 'DG', 'DG', 'DG', 'DG', 'DG', 'DG', 'DG', 'DG', 'DG', 'DG', None, None, 
       None, None, None, None, None, None, None, None, None, None, None, None, None, None, None ],
@@ -209,7 +209,7 @@ def Build(filename):
       'SG DG', 'SG DG', None, None, None, None, None, None, None, 'LAMBDA', None, None, None, None, None, None, None ],
     ## R
     [ 'ERROR1', 'ERROR1', 'ERROR1', 'ERROR1', 'ERROR1', 'DG R', 'DG R', 'DG R', 'DG R', 'DG R', 'DG R', 'DG R', 'DG R', 'DG R', 
-      'DG R', 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', None, 'LAMBDA', 'ERROR1', None, None, 'LAMBDA', None, None, None, None, 
+      'DG R', 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', None, 'LAMBDA', 'ERROR1', None, None, 'LAMBDA', None, None, None, 'ERROR1', 
       None, None, None ],
     ## SG
     [ None, None, None, None, None, 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', 'LAMBDA', 
@@ -264,7 +264,7 @@ def Build(filename):
         
         if sourceCode[s] == 'VAR':
             var = True
-        elif sourceCode[s] == ':':
+        elif sourceCode[s] == ':' or sourceCode[s] == 'INTEGER':
             var = False
         
         ## (5)
@@ -303,6 +303,9 @@ def Build(filename):
     
     ## Checks to see if END. is spelled correctly and exists in the program
     if sourceCode[len(sourceCode)-1] != 'END.':
+        if sourceCode[len(sourceCode)-1] == 'END':
+            print("ERROR: Missing period")
+            return False
         print("ERROR: END. is expected")
         return False
 
@@ -323,6 +326,9 @@ def Build(filename):
     while count <= len(statement):
         ## (2)
         current = stack.pop()
+        #print("Stack: {}".format(stack))
+        #print("Popped: {}".format(current))
+        #print("Read: {}".format(statement[count]))
         if current == statement[count]:
             ## (3)
             if current == 'END.':
@@ -331,7 +337,7 @@ def Build(filename):
         elif current != 'LAMBDA':
             ## (4)
             pending = table[ RowValue(current) ][ ColumnValue(statement[count]) ]
-            
+            #print("Table value: {}".format(pending))
             if pending not in error:
                 pending = pending.split() # create a list of pending characters
                 if ''.join(pending) == 'I,D':
@@ -366,4 +372,3 @@ def Build(filename):
     ####################
     ## END WHILE LOOP ##
     ####################
-## END build
