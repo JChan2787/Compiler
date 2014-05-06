@@ -221,7 +221,7 @@ def Build(filename):
     [ 'v', 'w', 'x', 'y', 'z', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
       None, None, None, None, None, None, None, None, None, None, None, None ],
     ## ERROR CATCHER
-    [ None, None, 'ERROR1', 'ERROR1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
+    [ None, None, 'ERROR1', 'ERROR1', 'ERROR1', None, None, None, None, None, None, None, None, None, None, None, None, None, 
       None, None, 'ERROR4', 'ERROR1', None, None, None, None, None, None, 'ERROR1', None, 'ERROR1', None ] ]
     
     variables = [] # Keeps track of declared variables
