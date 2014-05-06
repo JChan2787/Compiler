@@ -331,9 +331,9 @@ def Build(filename):
     while count <= len(statement):
         ## (2)
         current = stack.pop()
-        print("Stack: {}".format(stack))
-        print("Popped: {}".format(current))
-        print("Read: {}".format(statement[count]))
+        #print("Stack: {}".format(stack))
+        #print("Popped: {}".format(current))
+        #print("Read: {}".format(statement[count]))
         if current == statement[count]:
             ## (3)
             if current == 'END.':
