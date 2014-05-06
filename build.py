@@ -135,7 +135,7 @@ def CheckVariables(statementList, variables):
     for i in statementList:
         if i not in r:
             if i.isdigit() == False:
-                if i not in variables and i != '+':
+                if i not in variables and i != '+' and i != '-':
                     return False    
     return True
 ## END CheckVariables function
@@ -197,7 +197,7 @@ def Build(filename):
       None, None, None ],
     ## TM'
     [ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 'LAMBDA', 'LAMBDA', 
-      "* F TM'", "/ F TM'", None, 'LAMBDA', None, None, None, 'LAMBDA', None, None, 'ERROR1', None, None, None, None ],
+      "* F TM'", "/ F TM'", None, 'LAMBDA', 'ERROR1', None, None, 'LAMBDA', None, None, 'ERROR1', 'ERROR1', None, None, None ],
     ## F
     [ 'I', 'I', 'I', 'I', 'I', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', None, None, '( E )', None, None, 
       None, None, None, None, None, None, None, None, None, None ],
@@ -221,7 +221,7 @@ def Build(filename):
     [ 'v', 'w', 'x', 'y', 'z', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
       None, None, None, None, None, None, None, None, None, None, None, None ],
     ## ERROR CATCHER
-    [ None, None, 'ERRORVAR', None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
+    [ None, None, 'ERROR1', 'ERROR1', None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
       None, None, 'ERROR4', 'ERROR1', None, None, None, None, None, None, 'ERROR1', None, 'ERROR1', None ] ]
     
     variables = [] # Keeps track of declared variables
@@ -233,6 +233,16 @@ def Build(filename):
     currentLine = 0 # keeps track of the current line
     var = False # boolean flag that tells if 
     numberOfVars = 0
+
+    ## Checks to see if PROGRAM is spelled correctly and exists in the program.
+    ## Also checks to see if user entered a semicolon after program name
+    print(sourceCode)
+    if sourceCode[0] != 'PROGRAM':
+        print("ERROR: PROGRAM is expected")
+        return False
+    elif sourceCode[2] != ';':
+        print("ERROR: Missing semicolon")
+        return False
 
     ## FOR LOOP
     ## (1) Goes through each word in file and strips all newline, tab, and return characters
@@ -295,11 +305,6 @@ def Build(filename):
     #####################
     ## END of FOR LOOP ##
     #####################
- 
-    ## Checks to see if PROGRAM is spelled correctly and exists in the program
-    if sourceCode[0] != 'PROGRAM':
-        print("ERROR: PROGRAM is expected")
-        return False
     
     ## Checks to see if END. is spelled correctly and exists in the program
     if sourceCode[len(sourceCode)-1] != 'END.':
@@ -326,6 +331,9 @@ def Build(filename):
     while count <= len(statement):
         ## (2)
         current = stack.pop()
+        print("Stack: {}".format(stack))
+        print("Popped: {}".format(current))
+        print("Read: {}".format(statement[count]))
         if current == statement[count]:
             ## (3)
             if current == 'END.':
