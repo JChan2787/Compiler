@@ -11,10 +11,13 @@ def FindStart(line):
 	index = line.find('PROGRAM')
 	if index != -1:
 		if line[7] != ' ':
-			line = line[0:7] + ' ' + line[7:-1] + ' ' + ';'
+			line = line[0:7] + ' ' + line[7:] 
+			if line[-1:] == ';':
+			    line = line[:-1] + ' ;'
 		return True, line
 	else:
 		return False, line
+		
 ## END FindStart
 
 ## RemoveComments - Completely remove all comments from the program
